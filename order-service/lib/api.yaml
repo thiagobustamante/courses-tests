@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Orders API
-  description: API para criação e manipulação de orders.
+  description: A simple API for orders management. It was created as part of a test course.
   license:
     name: MIT
   version: 1.0.0
@@ -12,10 +12,10 @@ paths:
     post:
       tags:
       - Orders
-      description: Cria uma nova order
+      description: creates a new order
       operationId: createOrder
       requestBody:
-        description: Dados da ordem a ser criada
+        description: Some initial order information
         content:
           application/json:
             schema:
@@ -34,12 +34,12 @@ paths:
     post:
       tags:
       - Orders
-      description: Cria um item de compra na order
+      description: creates a new order item
       operationId: createOrderItem
       parameters:
       - name: orderId
         in: path
-        description: Ordem a ser modificada
+        description: The main order to be modified
         required: true
         schema:
           type: string
