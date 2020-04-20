@@ -4,7 +4,7 @@ const server = require('./infrastructure/server/server');
 
 
 const port = 3000;
-const apiSpec = path.join(__dirname, 'api.yaml');
+const apiSpec = path.join(__dirname, 'open-api.yaml');
 const app = express();
 
 server.configure(app, apiSpec, port)
