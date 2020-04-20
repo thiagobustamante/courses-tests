@@ -27,6 +27,9 @@ async function configure(app, apiSpec, port) {
     const openApiValidator = new OpenApiValidator({
         apiSpec,
         operationHandlers: path.join(__dirname, '../../interfaces'),
+        validateRequests: true,
+        validateFormats: 'full',
+        coerceTypes: false
     });
     await openApiValidator.install(app);
 

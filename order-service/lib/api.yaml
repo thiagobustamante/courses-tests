@@ -19,7 +19,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Order'
+              $ref: '#/components/schemas/OrderCreation'
         required: true
       responses:
         201:
@@ -61,6 +61,7 @@ paths:
 components:
   schemas:
     OrderItem:
+      additionalProperties: false
       required:
       - amount
       - productId
@@ -90,6 +91,22 @@ components:
           description: ""
           items:
             $ref: '#/components/schemas/OrderItem'
+      description: ""
+    OrderCreation:
+      additionalProperties: false
+      required:
+      - customerId
+      type: object
+      properties:
+        customerId:
+          type: string
+          description: ""
+        items:
+          type: array
+          description: ""
+          items:
+            $ref: '#/components/schemas/OrderItem'
+          description: ""      
       description: ""
   securitySchemes:
     Bearer:
