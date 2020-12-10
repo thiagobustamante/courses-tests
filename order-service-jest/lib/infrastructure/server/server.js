@@ -1,5 +1,5 @@
 const http = require('http');
-const { OpenApiValidator } = require('express-openapi-validator');
+const OpenApiValidator = require('express-openapi-validator');
 const bodyParser = require('body-parser');
 const logger = require('morgan');
 const path = require('path');
@@ -24,14 +24,14 @@ async function configure(app, apiSpec, port) {
     app.use(bodyParser.json());
     app.use(logger('dev'));
 
-    const openApiValidator = new OpenApiValidator({
+    const openApiValidator = OpenApiValidator.middleware({
         apiSpec,
         operationHandlers: path.join(__dirname, '../../interfaces'),
         validateRequests: true,
         validateFormats: 'full',
         coerceTypes: false
     });
-    await openApiValidator.install(app);
+    app.use(openApiValidator);
 
     app.use(errorHandler);
 
