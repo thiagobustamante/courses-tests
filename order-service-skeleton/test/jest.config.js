@@ -5,7 +5,7 @@ module.exports = {
     testMatch: ['**/test/unit/**/*.spec.js', '**/test/integration/**/*.spec.js'],
     coverageDirectory: 'reports/coverage',
     collectCoverageFrom: [
-        'src/**/*.{js,jsx}'
+        'lib/**/*.{js,jsx}'
     ],
     coverageThreshold: {
         global: {
