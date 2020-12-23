@@ -25,5 +25,19 @@ module.exports = {
         } catch (error) {
             next(error);
         }
+    }, 
+
+    createOrderCheckout: async (call, res, next) => {
+        try {
+            const orderId = call.params.orderId;
+            const item = call.body;
+
+            const orderUseCases = new OrderUseCases();
+            const checkout = await orderUseCases.checkout(orderId);
+
+            res.status(200).send(checkout);
+        } catch (error) {
+            next(error);
+        }
     }
 };

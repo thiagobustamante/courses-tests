@@ -18,6 +18,12 @@ class OrderUseCases {
         await order.save();
         return order;
     }
+
+    async checkout(orderId) {
+        const order = new Order(orderId);
+        await order.load();
+        return await order.createCheckout();
+    }
 }
 
 module.exports = {

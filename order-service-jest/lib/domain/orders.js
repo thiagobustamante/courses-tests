@@ -1,5 +1,6 @@
 const uuid = require('uuid').v4;
 const { OrdersRepository } = require('../infrastructure/database/orders-repository');
+const { CheckoutRepository } = require('../infrastructure/http/checkout-repository');
 
 class Order {
     constructor(id) {
@@ -8,7 +9,8 @@ class Order {
         }
         this._id = id;
         this._items = new Array();
-        this.repository = new OrdersRepository();
+        this.ordersRepository = new OrdersRepository();
+        this.checkoutRepository = new CheckoutRepository();
     }
 
     get id() {
@@ -64,7 +66,7 @@ class Order {
     }
 
     async save() {
-        return this.repository.persist({
+        return this.ordersRepository.persist({
             id: this.id,
             customerId: this.customerId,
             items: this.items
@@ -72,10 +74,14 @@ class Order {
     }
 
     async load() {
-        const orderData = await this.repository.load(this.id);
+        const orderData = await this.ordersRepository.load(this.id);
         this._items = orderData.items || [];
         this.customerId = orderData.customerId;
         return this;
+    }
+
+    async createCheckout() {
+        return await this.checkoutRepository.createCheckout(this.id);
     }
 }
 

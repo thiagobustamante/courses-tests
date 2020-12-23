@@ -1,6 +1,6 @@
 node_modules
 .DS_Store
 .vscode
-reports/coverage
+reports
 # stryker temp files
 .stryker-tmp
