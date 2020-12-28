@@ -5,3 +5,4 @@ reports
 pact
 # stryker temp files
 .stryker-tmp
+globalConfig.json
