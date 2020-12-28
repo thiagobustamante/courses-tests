@@ -16,6 +16,7 @@
     "test:integration": "jest --config ./test/jest.config-integration.js --forceExit",
     "test:integration-docker": "jest --config ./test/jest.config-integration-docker.js --forceExit",
     "test:contract": "jest --config ./test/jest.config-contract.js",
+    "pactPublish": "pact-broker publish ./pact/pacts/orderservice-checkoutservice.json --consumer-app-version=$(git describe --always) --broker-base-url=\"http://localhost:9292\"",
     "test:mutation": "stryker run ./test/stryker.conf.js"
   },
   "license": "MIT",
