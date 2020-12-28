@@ -3,8 +3,7 @@ const express = require('express');
 const path = require('path');
 const fetch = require('node-fetch');
 const server = require('../../../lib/infrastructure/server/server');
-const nock = require('nock');
-const { env } = require('process');
+const { GenericContainer } = require("testcontainers");
 
 const post = async (resource, body) => {
     const response = await fetch(`http://localhost:3000${resource}`, {
@@ -16,13 +15,21 @@ const post = async (resource, body) => {
 };
 
 describe('Orders Endpoints', () => {
-        
+
+    let container;
     let connection;
     let db;
    
     const app = express();
     
     beforeAll(async () => {
+
+        container = await new GenericContainer('mongo')
+            .withExposedPorts(27017)
+            .start();
+
+        process.env.MONGO_URL = `mongodb://${container.getHost()}:${container.getMappedPort(27017)}/orders`;
+
         connection = await MongoClient.connect(process.env.MONGO_URL, {
             useNewUrlParser: true,
             useUnifiedTopology: true
@@ -32,7 +39,7 @@ describe('Orders Endpoints', () => {
         const port = 3000;
         const apiSpec = path.join(__dirname, '../../../lib/open-api.yaml');
         await server.configure(app, apiSpec, port)
-    });
+    }, 50000);
    
     beforeEach(async () => {
         await db.collection('orders').deleteMany({});
@@ -41,6 +48,7 @@ describe('Orders Endpoints', () => {
     afterAll(async () => {
         await connection.close();
         await app.close();
+        await container.stop();
     });
 
     it('should create an order', async () => {
@@ -76,31 +84,4 @@ describe('Orders Endpoints', () => {
 
 });
 
-describe('Order Service', () => {
-   let scope;
-   
-    it('should create a checkout for an order', async () => {
-        let response = await post('/orders', { customerId: '1234' });
-        const location = response.headers.get('Location');
 
-        expect(location).toBeDefined();
-        expect(location.length).toBeGreaterThan(8);
-
-        const orderId = location.substring(8);
-
-        const CHECKOUT_URL = 'http://myserviceurl:3001'
-        const checkout = {
-            customerId: '1234',
-            orderId: orderId,
-            status: 'created'
-        };
-        process.env.CHECKOUT_URL = CHECKOUT_URL;
-        scope = nock(CHECKOUT_URL)
-            .post(`/orders/${orderId}/checkout`)
-            .reply(200, JSON.stringify(checkout));
-
-        response = await post(`/orders/${orderId}/checkout`);
-        const receivedCheckout = await response.json();
-        expect(receivedCheckout).toEqual(checkout);
-    });
-});

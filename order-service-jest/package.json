@@ -14,6 +14,8 @@
     "test": "npm run test:unit && npm run test:integration",
     "test:unit": "jest --config ./test/jest.config-unit.js --coverage",
     "test:integration": "jest --config ./test/jest.config-integration.js --forceExit",
+    "test:integration-docker": "jest --config ./test/jest.config-integration-docker.js --forceExit",
+    "test:contract": "jest --config ./test/jest.config-contract.js",
     "test:mutation": "stryker run ./test/stryker.conf.js"
   },
   "license": "MIT",
@@ -29,11 +31,14 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
+    "@pact-foundation/pact": "^9.13.0",
     "@shelf/jest-mongodb": "^1.2.3",
     "@stryker-mutator/core": "^4.2.0",
     "@stryker-mutator/jest-runner": "^4.2.0",
     "@types/jest": "^26.0.18",
     "jest": "^26.6.3",
-    "nock": "^13.0.5"
+    "jest-pact": "^0.8.1",
+    "nock": "^13.0.5",
+    "testcontainers": "^6.4.1"
   }
 }

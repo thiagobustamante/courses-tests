@@ -1,6 +1,6 @@
 module.exports = {
-    preset: '@shelf/jest-mongodb',
+    testEnvironment: 'node',
     moduleFileExtensions: ['js', 'json', 'node'],
     rootDir: '../',
-    testMatch: ['**/test/integration/**/*.spec.js']
+    testMatch: ['**/test/integration-docker/**/*.spec.js']
 };
