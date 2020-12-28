@@ -23,7 +23,7 @@ pactWith(pactConfig, provider => {
             willRespondWith: {
               body: {
                   customerId: Matchers.like('1234'),
-                  orderId: Matchers.like(orderId),
+                  orderId: orderId,
                   status: Matchers.string('created')
               },
               headers: { 'Content-Type': 'application/json; charset=utf-8' },

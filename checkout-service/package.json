@@ -1,0 +1,27 @@
+{
+  "name": "checkout-service",
+  "version": "1.0.0",
+  "description": "This is a Order checkout microservice that is used to support the test course.",
+  "main": "./lib/index.js",
+  "directories": {
+    "lib": "./lib"
+  },
+  "keywords": [
+    "tests"
+  ],
+  "scripts": {
+    "start": "node lib/index.js",
+    "test:contract": "jest --config ./test/jest.config-contract.js --forceExit"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "@pact-foundation/pact": "^9.13.0",
+    "@types/jest": "^26.0.18",
+    "jest": "^26.6.3",
+    "jest-pact": "^0.8.1"
+  }
+}
