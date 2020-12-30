@@ -15,32 +15,31 @@ const post = async (resource, body) => {
     return response;
 };
 
-describe('Orders Endpoints', () => {
-        
-    let connection;
-    let db;
-   
-    const app = express();
-    
-    beforeAll(async () => {
-        connection = await MongoClient.connect(process.env.MONGO_URL, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
-        db = await connection.db();
-
-        const port = 3000;
-        const apiSpec = path.join(__dirname, '../../../lib/open-api.yaml');
-        await server.configure(app, apiSpec, port)
+let connection;
+let db;
+let ordersServer;
+beforeAll(async () => {
+    connection = await MongoClient.connect(process.env.MONGO_URL, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
     });
-   
+    db = await connection.db();
+
+    const port = 3000;
+    const apiSpec = path.join(__dirname, '../../../lib/open-api.yaml');
+    ordersServer = await server.configure(express(), apiSpec, port)
+});
+
+afterAll(async () => {
+    await connection.close();
+    await ordersServer.close();
+});
+
+
+describe('Orders Endpoints', () => {
+           
     beforeEach(async () => {
         await db.collection('orders').deleteMany({});
-    });
-
-    afterAll(async () => {
-        await connection.close();
-        await app.close();
     });
 
     it('should create an order', async () => {
@@ -77,9 +76,11 @@ describe('Orders Endpoints', () => {
 });
 
 describe('Order Service', () => {
-   let scope;
-   
-    it('should create a checkout for an order', async () => {
+   beforeEach(async () => {
+        await db.collection('orders').deleteMany({});
+    });
+ 
+   it('should create a checkout for an order', async () => {
         let response = await post('/orders', { customerId: '1234' });
         const location = response.headers.get('Location');
 
@@ -95,7 +96,7 @@ describe('Order Service', () => {
             status: 'created'
         };
         process.env.CHECKOUT_URL = CHECKOUT_URL;
-        scope = nock(CHECKOUT_URL)
+        nock(CHECKOUT_URL)
             .post(`/orders/${orderId}/checkout`)
             .reply(200, JSON.stringify(checkout));
 

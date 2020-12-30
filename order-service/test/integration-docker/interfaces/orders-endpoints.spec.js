@@ -19,8 +19,7 @@ describe('Orders Endpoints', () => {
     let container;
     let connection;
     let db;
-   
-    const app = express();
+    let ordersServer;
     
     beforeAll(async () => {
 
@@ -38,7 +37,7 @@ describe('Orders Endpoints', () => {
 
         const port = 3000;
         const apiSpec = path.join(__dirname, '../../../lib/open-api.yaml');
-        await server.configure(app, apiSpec, port)
+        ordersServer = await server.configure(express(), apiSpec, port)
     }, 50000);
    
     beforeEach(async () => {
@@ -47,7 +46,7 @@ describe('Orders Endpoints', () => {
 
     afterAll(async () => {
         await connection.close();
-        await app.close();
+        await ordersServer.close();
         await container.stop();
     });
 

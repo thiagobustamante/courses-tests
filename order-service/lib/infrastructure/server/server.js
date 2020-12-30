@@ -35,9 +35,7 @@ async function configure(app, apiSpec, port) {
 
     app.use(errorHandler);
 
-    http.createServer(app).listen(port);
-
-    return app;
+    return http.createServer(app).listen(port);
 }
 
 module.exports = {
