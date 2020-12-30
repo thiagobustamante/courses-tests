@@ -1,0 +1,17 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "cucumber-js "
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@cucumber/cucumber": "^7.0.0",
+    "enqueuer": "^5.3.0",
+    "enqueuer-cucumber": "^2.0.3",
+    "testcontainers": "^6.4.1"
+  }
+}

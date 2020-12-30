@@ -1,0 +1,7 @@
+node_modules
+.vscode
+test
+Dockerfile
+globalConfig.json
+reports
+pact

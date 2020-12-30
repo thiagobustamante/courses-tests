@@ -1,6 +1,6 @@
 const path = require('path')
 const { Verifier, Matchers } = require('@pact-foundation/pact');
-const { startServer } = require('../../lib/index')
+const { startServer } = require('../../lib/server')
 const version = require('../../package.json').version;
 
 describe('When the Checkout API is called', () => {          

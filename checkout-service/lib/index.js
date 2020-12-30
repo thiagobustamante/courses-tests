@@ -1,19 +1,5 @@
-const express = require('express');
-const http = require('http');
+const { startServer }  = require('./server');
 
-const server = express();
-
-server.post('/orders/:orderId/checkout', (req, res, next) => {
-    res.send({
-        customerId: '123456789',
-        orderId: req.params.orderId,
-        status: 'created'
-    });
+startServer(3001, () => {
+    console.log('server listenning on port 3001');
 });
-
-module.exports = {
-    startServer: (port, cb) => {
-        http.createServer(server).listen(port, cb);
-    }
-};
-  

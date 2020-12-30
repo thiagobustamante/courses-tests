@@ -1,0 +1,48 @@
+name: Checkout request for a given order
+publishers:
+  -   name: I have an order to buy on my store
+      type: http
+      payload:
+        customerId: `my-customer-id`
+      headers:
+        content-type: 'application/json' 
+      url: http://localhost:3000/orders
+      method: POST
+      onResponseReceived:
+        assertions:
+            -   name: Status Code
+                expect: statusCode
+                toBeEqualTo: 201
+            # -   name: Header
+            #     expectToBeDefined: headers['location']
+        store:
+          orderId: rawHeaders[rawHeaders.indexOf('Location')+1].substring(8)
+  -   name: I start the checkout process
+      type: http
+      payload:
+      method: POST
+      onInit:
+        script: this.url = 'http://localhost:3000/orders/' + store.orderId + '/checkout'
+      onResponseReceived:
+        assertions:
+            -   expect: statusCode
+                toBeEqualTo: 200
+            -   expect: JSON.parse(body).orderId
+                toBeEqualTo: store.orderId
+subscriptions:
+  -   type: http-proxy
+      name: I should call the checkout service
+      endpoint: /orders
+      port: 3002
+      method: POST
+      redirect:
+        method: POST
+      onOriginalMessageReceived:
+          script: this.redirect.url = 'http://localhost:3001/orders/' + store.orderId + '/checkout';
+          assertions:
+          -   expect: url
+              toBeEqualTo: `/orders/${store.orderId}/checkout`
+      onMessageReceived:
+          assertions:
+            -   expect: JSON.parse(body).orderId
+                toBeEqualTo: store.orderId
