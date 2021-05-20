@@ -18,7 +18,7 @@
     "test:acceptance": "cucumber-js test/acceptance/features --format-options '{\"snippetInterface\": \"synchronous\"} ' --publish-quiet --exit",
     "test:acceptance-enqueuer": "cucumber-js test/acceptance-enqueuer/features --format-options '{\"snippetInterface\": \"synchronous\"} ' --publish-quiet --exit",
     "test:contract": "jest --config ./test/jest.config-contract.js",
-    "pactPublish": "pact-broker publish ./pact/pacts/orderservice-checkoutservice.json --consumer-app-version=$(git describe --always) --broker-base-url=\"http://localhost:9292\"",
+    "pact:publish": "pact-broker publish ./pact/pacts/orderservice-checkoutservice.json --consumer-app-version=$(git describe --always) --broker-base-url=\"http://localhost:9292\"",
     "test:mutation": "stryker run ./test/stryker.conf.js"
   },
   "license": "MIT",

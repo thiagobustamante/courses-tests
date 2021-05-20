@@ -13,8 +13,13 @@ class CheckoutRepository {
             method: 'post',
             body: ''
         });
-            
-        return await response.json();
+        
+        if (response.status === 200) {
+            return await response.json();
+        }
+        else {
+            throw new Error(`Error processing checkoout for order ${orderId}`);
+        }
     }
 }
 

@@ -4,7 +4,6 @@ const path = require('path');
 const fetch = require('node-fetch');
 const server = require('../../../lib/infrastructure/server/server');
 const nock = require('nock');
-const { env } = require('process');
 
 const post = async (resource, body) => {
     const response = await fetch(`http://localhost:3000${resource}`, {
